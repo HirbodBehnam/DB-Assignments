@@ -1,0 +1,77 @@
+\smalltitle{سوال 1}\\
+همان طور که در کلاس نیز گفته شده بود، در ابتدا موجودیت‌های قوی، سپس موجودیت‌های ضعیف، بعد رابطه‌های چند به چند
+و در نهایت ارث بری‌ها را مدل می‌کنیم. من یک تغییر خیلی ریزی در
+\lr{ER}
+دادم که هر
+\lr{Owner}
+باید یک
+\lr{ID}
+داشته باشد. با این فرض‌ها رابطه‌های ما به صورت زیر هستند:
+\begin{latin}
+\begin{itemize}
+    % Strong entities
+    \item PLANE\_TYPE (\underline{Model}, Capacity, Weight)
+    \item AIRPLANE (\underline{Reg\#}, Type, Stored\_In)
+    \item HANGER (\underline{Number}, Capacity, Location)
+    % Weak entities
+    \item SERVICE (\underline{Date}, \underline{Workcode}, \underline{Plane}, Hours)
+    % Superclasses
+    \item PERSON (\underline{Ssn}, Name, Address, Phone)
+    \item CORPORATION (\underline{Name}, Address, Phone)
+    % Subclasses
+    \item OWNER (\underline{ID}, Ssn, Name, Type)
+    \item PILOT (\underline{Ssn}, Restr, Lic\_num)
+    \item EMPLOYEE (\underline{Ssn}, Salary, Shift)
+    % M:N relations
+    \item AIRPLANE\_OWNERS (\underline{Reg\#}, \underline{Owner\_ID}, Pdate)
+    \item FLIES (\underline{Model}, \underline{Ssn})
+    \item WORKS\_ON (\underline{Model}, \underline{Ssn})
+\end{itemize}
+\end{latin}
+\noindent
+حال کلید‌های خارجی را مشخص می‌کنیم:
+\begin{latin}
+\begin{itemize}
+    \item AIRPLANE(Type) References PLANE\_TYPE(Model)
+    \item AIRPLANE(Stored\_In) References HANGER(Number)
+    \item SERVICE(Plane) References AIRPLANE(Reg\#)
+    \item OWNER(Ssn) References PERSON(Ssn)
+    \item OWNER(Name) References CORPORATION(Name)
+    \item PILOT(Ssn) References PERSON(Ssn)
+    \item EMPLOYEE(Ssn) References PERSON(Ssn)
+    \item AIRPLANE\_OWNERS(Reg\#) References AIRPLANE(Reg\#)
+    \item AIRPLANE\_OWNERS(Owner\_ID) References OWNER(ID)
+    \item FLIES(Model) References PLANE\_TYPE(Model)
+    \item FLIES(Ssn) References PILOT(Model)
+    \item WORKS\_ON(Model) References PLANE\_TYPE(Model)
+    \item WORKS\_ON(Ssn) References EMPLOYEE(Model)
+\end{itemize}
+\end{latin}
+\noindent
+قبل از اینکه ویژگی‌های
+\lr{nullable}
+را نام ببرم می‌خواستم بگویم که به نظرم کمی مدل
+\lr{ER}
+مشکل رابطه‌های اجباری دارد. به عنوان مثال به نظر من باید حتما
+\lr{Airplane}
+به
+\lr{Plane Type}
+رابطه اجباری داشته باشد ولی در مدل
+\lr{ER}
+این طوری نیست. به هر حال با اعمال این روابط، ویژگی‌های
+\lr{nullable}
+به صورت زیر هستند:
+\begin{latin}
+\begin{itemize}
+    \item SERVICE(Hours)
+    \item OWNER(Ssn)
+    \item OWNER(Name)
+\end{itemize}
+\end{latin}
+برای یونیک بودن نیز به نظرم این صفت‌ها + کلید‌های اصلی باید یونیک باشند:
+\begin{latin}
+\begin{itemize}
+    \item PILOT(Lic\_num)
+\end{itemize}
+\end{latin}
+
