@@ -1,0 +1,1 @@
+SELECT Nurse.Name, On_call.BlockFloor, On_call.BlockCode FROM On_call INNER JOIN Nurse ON On_call.Nurse = Nurse.Employeeid

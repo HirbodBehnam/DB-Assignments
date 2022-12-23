@@ -1,0 +1,1 @@
+SELECT COUNT(*) FROM Undergoes INNER JOIN Physician ON Physician.Emloyeeid = Undergoes.Physician WHERE Physician.name LIKE 'j%'

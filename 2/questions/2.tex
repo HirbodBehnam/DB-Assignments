@@ -30,11 +30,42 @@
     \lr{natural join}
     استفاده می‌کنم که رابطه کوتاه‌تر شود.
     \begin{gather*}
-        \text{LoanBranchCount} := \text{نام وام گیرنده} \mathcal{G}_{\operatorname{count}(\text{شعبه وام دهنده})}(\text{وام})
+        \text{LoanBranchCount} := \rho_{\text{وام‌ شمار}(\text{نام مشتری، تعداد شعب وام})} (\text{نام وام گیرنده} \mathcal{G}_{\operatorname{count}(\text{شعبه وام دهنده})}(\text{وام}))
     \end{gather*}
     حال تعداد شعب هر شهر را نیز بدست می‌آوریم:
     \begin{gather*}
-        \text{BranchesInCity} := \text{شهر} \mathcal{G}_{\operatorname{count}(\text{نام شعبه})}(\text{شعبه})
+        \text{BranchesInCity} := \rho_{\text{شعبه شمار}(\text{شهر، تعداد شعب})} (\text{شهر} \mathcal{G}_{\operatorname{count}(\text{نام شعبه})}(\text{شعبه}))
+    \end{gather*}
+    سپس با جوین کردن وام شمار با جدول مشتری شهر هر مشتری را بدست می‌آوریم. در نهایت با جوین کردن جدول حاصل با
+    \lr{BranchesInCity}
+    می‌توانیم پیدا کنیم که در شهر هر کاربر چند شعبه وجود دارد. در نهایت نیز جدول حاصل را در تعداد کل شعب
+    ضرب دکارتی می‌کنیم. (کوئری در زیر آمده است)
+    \begin{gather*}
+        \text{TotalBranches} := \mathcal{G}_{\operatorname{count}(\text{نام شعبه})}(\text{شعبه})\\
+        \text{CandidateCustomers} :=
+        \Pi_{\text{نام مشتری}} \bigl(
+        \sigma_{\text{تعداد شعب وام} + \text{تعداد شعب شهر مشتری} = \text{Total Branches}} \bigl(
+        \\
+        \Pi_{\text{نام مشتری، تعداد شعب وام، تعداد شعب شهر مشتری}} (\text{LoanBranchCount} \infty \text{مشتری} \infty \text{BranchesInCity})
+        \\
+        \times
+        \\
+        \text{TotalBranches}
+        \bigr) \bigr)
+    \end{gather*}
+    حال باید مشتری‌هایی را از این لیست پیدا کنیم که از شهر خود وام گرفته باشند؛ پاسخ این قسمت برابر متمم پاسخ
+    کل این قسمت است.
+    \begin{gather*}
+        \text{NotAnswer} := \Pi_{\text{نام مشتری، نام شهر مشتری}} \bigl( \sigma_{\text{شهر شعبه} = \text{شهر مشتری}} ((\text{مشتری} \ltimes \text{CandidateCustomers}) \infty \text{وام} \infty \text{شعبه})\bigr)\\
+        \text{B} := \Pi_{\text{نام مشتری، نام شهر مشتری}}(\text{مشتری}) - \text{NotAnswer}
+    \end{gather*}
+    در نهایت
+    $A$
+    و
+    $B$
+    را اشتراک می‌گیریم:
+    \begin{gather*}
+        A \cap B
     \end{gather*}
     \item در ابتدا لیست همشهری‌های مجید را پیدا می‌کنیم. برای اینکار در ابتدا شهر مجید را پیدا می‌کنیم. خروجی
     مورد نظر یک جدول است که یک ستون و یک سطر دارد. سپس این جدول را با خود مشتری‌ها
