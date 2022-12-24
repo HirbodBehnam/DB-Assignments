@@ -1,41 +1,37 @@
 CREATE TABLE "Addresses" (
-  "CustomerId" serial,
+  "CustomerId" serial NOT NULL,
   "Address" varchar(255) NOT NULL,
-  "Id" serial,
+  "Id" serial NOT NULL,
   "GeoLocation" point,
   PRIMARY KEY ("Id")
 );
 
 CREATE TABLE "BikeTypes" (
-  "Id" serial,
+  "Id" serial NOT NULL,
   "Name" varchar(255) NOT NULL,
   PRIMARY KEY ("Id")
 );
 
 CREATE TABLE "Branch" (
   "BranchSerialNumber" varchar(255) NOT NULL,
-  "ForResturant" serial,
+  "ForResturant" serial NOT NULL,
   "Name" varchar(255) NOT NULL,
   "IsClosed" bool NOT NULL,
   "Details" text,
-  "ResturantType" serial,
+  "ResturantType" serial NOT NULL,
   "Address" varchar(255) NOT NULL,
   PRIMARY KEY ("BranchSerialNumber", "ForResturant"),
   CONSTRAINT "u_serial" UNIQUE ("BranchSerialNumber")
 );
 
 CREATE TABLE "Customer" (
-  "Id" serial,
+  "Id" serial NOT NULL,
   PRIMARY KEY ("Id")
 );
 
-CREATE TABLE "Default" (
-
-);
-
 CREATE TABLE "Delivery" (
-  "Id" serial,
-  "BikeType" serial,
+  "Id" serial NOT NULL,
+  "BikeType" serial NOT NULL,
   "PlateNumber" varchar(10) NOT NULL,
   PRIMARY KEY ("Id")
 );
@@ -54,14 +50,14 @@ CREATE TABLE "DiscountCode" (
 );
 
 CREATE TABLE "Food" (
-  "id" serial,
-  "ForResturant" serial,
+  "id" serial NOT NULL,
+  "ForResturant" serial NOT NULL,
   "ForBranch" varchar(255) NOT NULL,
   "Name" varchar(255) NOT NULL,
   "Pirce" int4 NOT NULL,
   "InStock" int2,
   "DiscountedPrice" int4,
-  "Type" serial,
+  "Type" serial NOT NULL,
   PRIMARY KEY ("id", "ForResturant", "ForBranch")
 );
 COMMENT ON COLUMN "Food"."InStock" IS 'Is null if no limits';
@@ -71,19 +67,19 @@ CREATE UNIQUE INDEX "i_food_id" ON "Food" (
 );
 
 CREATE TABLE "FoodType" (
-  "id" serial,
+  "id" serial NOT NULL,
   "Name" varchar(255) NOT NULL,
   PRIMARY KEY ("id")
 );
 
 CREATE TABLE "Order" (
-  "id" serial,
-  "ForCustomer" serial,
+  "id" serial NOT NULL,
+  "ForCustomer" serial NOT NULL,
   "DeliveredBy" serial,
   "DeliveryPrice" int4,
   "DeliveredTime" date,
   "DiscountCode" varchar(255),
-  "DeliveryAddress" serial,
+  "DeliveryAddress" serial NOT NULL,
   "FinalPriceNoDiscount" int4 NOT NULL,
   "FinalPriceAfterDiscount" int4,
   "OrderDate" date NOT NULL,
@@ -95,34 +91,34 @@ COMMENT ON COLUMN "Order"."FinalPriceAfterDiscount" IS 'Null if no discount is u
 COMMENT ON COLUMN "Order"."OrderStatus" IS 'True if delivered, otherwise false';
 
 CREATE TABLE "OrderFoods" (
-  "OrderID" serial,
-  "FoodID" serial,
+  "OrderID" serial NOT NULL,
+  "FoodID" serial NOT NULL,
   PRIMARY KEY ("OrderID", "FoodID")
 );
 
 CREATE TABLE "Resturant" (
-  "id" serial,
+  "id" serial NOT NULL,
   "Name" varchar(255) NOT NULL,
   "StartDate" date NOT NULL,
   "Logo" bytea,
-  "OwnerID" serial,
+  "OwnerID" serial NOT NULL,
   PRIMARY KEY ("id")
 );
 
 CREATE TABLE "ResturantOwner" (
-  "Id" serial,
+  "Id" serial NOT NULL,
   PRIMARY KEY ("Id")
 );
 
 CREATE TABLE "ResturantTypes" (
-  "id" serial,
+  "id" serial NOT NULL,
   "Name" varchar(255) NOT NULL,
   PRIMARY KEY ("id")
 );
 
 CREATE TABLE "Review" (
-  "id" serial,
-  "ForOrder" serial,
+  "id" serial NOT NULL,
+  "ForOrder" serial NOT NULL,
   "Rating" int2 NOT NULL,
   "Content" text NOT NULL,
   "DeliveryRate" bool NOT NULL,
@@ -137,7 +133,7 @@ CREATE TABLE "Review" (
 COMMENT ON COLUMN "Review"."DeliveryRate" IS 'True if positive otherwise false';
 
 CREATE TABLE "User" (
-  "Id" serial,
+  "Id" serial NOT NULL,
   "LastName" varchar(255) NOT NULL,
   "FirstName" varchar(255) NOT NULL,
   "BirthDate" date NOT NULL,
