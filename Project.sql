@@ -49,8 +49,8 @@ CREATE TABLE "DiscountCode" (
   "CeilDiscount" int4,
   "CeilPercentage" int2,
   PRIMARY KEY ("Id"),
-  CONSTRAINT "C_DiscountPercentage" CHECK (DiscountPercentage > 0 AND DiscountPercentage <= 100),
-  CONSTRAINT "C_CeilPercentage" CHECK (CeilPercentage > 0 AND CeilPercentage  <= 100)
+  CONSTRAINT "C_DiscountPercentage" CHECK ("DiscountPercentage" > 0 AND "DiscountPercentage" <= 100),
+  CONSTRAINT "C_CeilPercentage" CHECK ("CeilPercentage" > 0 AND "CeilPercentage"  <= 100)
 );
 
 CREATE TABLE "Food" (
@@ -66,6 +66,9 @@ CREATE TABLE "Food" (
 );
 COMMENT ON COLUMN "Food"."InStock" IS 'Is null if no limits';
 COMMENT ON COLUMN "Food"."DiscountedPrice" IS 'Null if no discount';
+CREATE UNIQUE INDEX "i_food_id" ON "Food" (
+  "id"
+);
 
 CREATE TABLE "FoodType" (
   "id" serial,
@@ -105,10 +108,6 @@ CREATE TABLE "Resturant" (
   "OwnerID" serial,
   PRIMARY KEY ("id")
 );
-CREATE TRIGGER "insert_add_start_date" AFTER INSERT ON "Resturant"
-FOR EACH ROW
-EXECUTE PROCEDURE;
-COMMENT ON TRIGGER "insert_add_start_date" ON "Resturant" IS 'Adds the start date of the resturant';
 
 CREATE TABLE "ResturantOwner" (
   "Id" serial,
@@ -133,7 +132,7 @@ CREATE TABLE "Review" (
   "SnapfoodAnswer" text,
   "SnapfoodAnswerDate" date,
   PRIMARY KEY ("id", "ForOrder"),
-  CONSTRAINT "c_rate_range" CHECK (Rating >= 1 AND Rating <= 5)
+  CONSTRAINT "c_rate_range" CHECK ("Rating" >= 1 AND "Rating" <= 5)
 );
 COMMENT ON COLUMN "Review"."DeliveryRate" IS 'True if positive otherwise false';
 
@@ -142,13 +141,13 @@ CREATE TABLE "User" (
   "LastName" varchar(255) NOT NULL,
   "FirstName" varchar(255) NOT NULL,
   "BirthDate" date NOT NULL,
-  "Sex" bool[][][] NOT NULL,
+  "Sex" bool NOT NULL,
   "Password" varchar(255) NOT NULL,
   "PhoneNumber" varchar(11) NOT NULL,
   "Username" varchar(255) NOT NULL,
   PRIMARY KEY ("Id")
 );
-CREATE UNIQUE INDEX "Username" ON "User" (
+CREATE UNIQUE INDEX "i_username" ON "User" (
   "Username"
 );
 
@@ -159,7 +158,7 @@ ALTER TABLE "Customer" ADD CONSTRAINT "fk_Customer_User_1" FOREIGN KEY ("Id") RE
 ALTER TABLE "Delivery" ADD CONSTRAINT "fk_Delivery_BikeTypes_1" FOREIGN KEY ("BikeType") REFERENCES "BikeTypes" ("Id");
 ALTER TABLE "Delivery" ADD CONSTRAINT "fk_Delivery_User_1" FOREIGN KEY ("Id") REFERENCES "User" ("Id");
 ALTER TABLE "Food" ADD CONSTRAINT "fk_Food_FoodType_1" FOREIGN KEY ("Type") REFERENCES "FoodType" ("id");
-ALTER TABLE "Food" ADD CONSTRAINT "fk_Branch" FOREIGN KEY ("ForResturant", "ForBranch") REFERENCES "Branch" ("BranchSerialNumber", "ForResturant") ON DELETE CASCADE;
+ALTER TABLE "Food" ADD CONSTRAINT "fk_Branch" FOREIGN KEY ("ForResturant", "ForBranch") REFERENCES "Branch" ("ForResturant", "BranchSerialNumber") ON DELETE CASCADE;
 ALTER TABLE "Order" ADD CONSTRAINT "fk_Order_Customer_1" FOREIGN KEY ("ForCustomer") REFERENCES "Customer" ("Id");
 ALTER TABLE "Order" ADD CONSTRAINT "fk_Order_Delivery_1" FOREIGN KEY ("DeliveredBy") REFERENCES "Delivery" ("Id");
 ALTER TABLE "Order" ADD CONSTRAINT "fk_Order_Addresses_1" FOREIGN KEY ("DeliveryAddress") REFERENCES "Addresses" ("Id");
