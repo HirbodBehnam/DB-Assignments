@@ -1,15 +1,15 @@
-CREATE OR REPLACE FUNCTION change_room_availiblity()
+CREATE OR REPLACE FUNCTION make_room_available()
   RETURNS trigger AS 
 $BODY$
-DECLARE
-	is_bad BOOLEAN;
 BEGIN
-    -- TODO
+  IF (NEW.Type = 'double' AND OLD.Type = 'single') THEN
+    UPDATE Room SET Unavailable = FALSE WHERE Roomnumber = OLD.Roomnumber;
+  END IF;
 	RETURN NEW;
 end
 $BODY$
   LANGUAGE 'plpgsql' SECURITY INVOKER
 ;
 
-CREATE TRIGGER room_type_changer BEFORE INSERT ON Room 
-FOR EACH ROW EXECUTE PROCEDURE change_room_availiblity()
+CREATE TRIGGER make_room_available_trigger AFTER UPDATE ON Room 
+FOR EACH ROW EXECUTE PROCEDURE make_room_available()
