@@ -1,0 +1,81 @@
+\smalltitle{سوال 1}
+\begin{itemize}
+    \item ابتدا مجموعه‌ی وابستگی‌های تابعی کاهش‌ناپذیر را پیدا می‌کنیم.
+    \begin{gather*}
+        F = \{S \rightarrow X, S \rightarrow W, T \rightarrow Y, X \rightarrow Y, XY \rightarrow T, XY \rightarrow U, XY \rightarrow Z \}\\
+        \text{Decompose} \implies\\
+        F_{opt} = \{S \rightarrow X, S \rightarrow W, T \rightarrow Y, X \rightarrow T, X \rightarrow U, X \rightarrow Z\}
+    \end{gather*}
+    فرض می‌کنیم که رابطه در
+    \lr{1NF}
+    است و در یک
+    \lr{cell}
+    از جدول هیچ مقدار چند متغیره‌ای نداریم. حال کلید کاندید را پیدا می‌کنیم.
+    نکته‌ای که در اینجا وجود دارد این است که
+    $S$
+    هم کلید کاندید هست و هم سوپر کلید. مشخص است که هیچ
+    \lr{FD}ای
+    نداریم که سمت راست آن
+    $S$
+    باشد پس رابطه در
+    \lr{2NF}
+    نیز است.
+    اما از طرفی مشخص است که رابطه در
+    \lr{3NF}
+    نیست. چرا که با اینکه
+    $S$
+    کلید کاندید است، ولی
+    \lr{FD}هایی
+    داریم که از
+    $T$ و $X$
+    شروع می‌شوند. برای درست کردن، این رابطه را به چند رابطه میشکانیم:
+    \begin{gather*}
+        R_1=(\underline{S}, X, W)\\
+        R_2=(\underline{T}, Y)\\
+        R_3=(\underline{X}, T, U, Z)
+    \end{gather*}
+    از آنجا که صفت‌های این رابطه‌ها فقط به کلید‌های رابطه‌هایشان وابستگی تابعی دارند پس این رابطه‌ها
+    \lr{BCNF}
+    نیز هستند.
+    \item ابتدا مجموعه‌ی وابستگی‌های تابعی کاهش‌ناپذیر را پیدا می‌کنیم.
+    \begin{gather*}
+        F = \{A \rightarrow BC, BC \rightarrow AD, D \rightarrow E \}\\
+        \text{Decompose} \implies\\
+        F_{opt} = \{A \rightarrow B, A \rightarrow C, BC \rightarrow A, BC \rightarrow D, D \rightarrow E \}
+    \end{gather*}
+    فرض می‌کنیم که رابطه در
+    \lr{1NF}
+    است و در یک
+    \lr{cell}
+    از جدول هیچ مقدار چند متغیره‌ای نداریم. دراینجا نیز سوپر کلید و کلید کاندید
+    $A$
+    است. چرا که
+    $A^+ = R$
+    است. از آنجا که تنها یک کلید داریم و
+    \lr{composite}
+    نیست پس در
+    \lr{2NF}
+    هستیم. اما مثل قسمت قبل می‌توان نتیجه گرفت که در
+    \lr{3NF}
+    نیستیم. برای اینکه به
+    \lr{3NF}
+    برویم به چند رابطه، رابطه را میشکانیم.
+    \begin{gather*}
+        R_1=(\underline{A}, B, C)\\
+        R_2=(\underline{B, C}, D)\\
+        R_3=(\underline{D}, E)
+    \end{gather*}
+    حال باید
+    $R_2$
+    را چک کنیم که آیا ستون‌هایش وابستگی به
+    $\underline{BC}$
+    دارند یا خیر. که همان طور که از
+    $F_{opt}$
+    مشخص است
+    $D$
+    فقط به
+    $BC$
+    وابسته است پس در
+    \lr{BCNF}
+    هستیم.
+\end{itemize}
