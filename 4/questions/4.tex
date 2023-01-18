@@ -1,1 +1,14 @@
 \smalltitle{سوال 4}
+\begin{gather*}
+    R = (\text{Student}, \text{Lecturer}, \text{Course})\\
+    F = \{(\text{Student}, \text{Course}) \rightarrow \text{Lecturer}, \text{Lecturer} \rightarrow \text{Course}\}
+\end{gather*}
+نکته‌ای که وجود دارد این است که کلید‌های کاندید ما
+$(\text{Student}, \text{Lecturer})$
+و
+$(\text{Student}, \text{Course})$
+هستند. از آنجا که در همه‌ی حالت یک
+\lr{FD}
+به جزئی از کلید وصل می‌شود، پس این رابطه را نمی‌توان تجزیه‌ی خوب کرد و پس در نتیجه نمی‌توان آنرا
+\lr{BCNF}
+کرد.
